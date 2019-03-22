@@ -1,9 +1,12 @@
 
+import generalutil.LogicUtil;
 import java.awt.Point;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 /**
- *
+ * ShadowWave is an attempt to recreate the behaviour and effect of spell "Shadow 
+ * Wave" that the hero Dazzle possess in the game Dota 2. 
+ * @version 2019-03-22
  * @author bjornar.risdalen
  */
 public class ShadowWave extends Heal {
@@ -41,16 +44,21 @@ public class ShadowWave extends Heal {
         System.out.println(allies.size());
         
         testMethod();
-        //printCreepHealth();
+        printCreepHealth();
         //healAll(calculatePath(allies.get(0)), healAmounts[currentLevel]);
         //healAll(allies, healAmounts[currentLevel]);
     }
-    
+    /**
+     * shadowWave calculates a path from successive points closest to a point,
+     * and heals all creeps by a given amount, depending on the currentLevel.
+     * Currently, it has no max amount of bounces, nor does it prioritize heros
+     * like it would in Dota. 
+     */
     public void shadowWave() {
         if(isCollidingOrigin()) {
             Creep nearestCreep = nearestCreep(originPoint, allies);
-            debugCalculatePath(nearestCreep);
-           // healAll(calculatePath(nearestCreep), this.healAmount[currentLevel]);
+            //debugCalculatePath(nearestCreep);
+            healAll(calculatePath(nearestCreep), this.healAmount[currentLevel]);
         } else {
             System.out.println("No creeps within cast range");
         }
@@ -70,6 +78,9 @@ public class ShadowWave extends Heal {
             temp.add(nearestCreep(temp.get(i), cListCopy));
             cListCopy.remove(temp.get(i));
         }
+        // TODO: Er dette beste løsningen kanskje?
+        temp.remove(temp.get(0));
+        System.out.println("Temp size: " + temp.size());
         return temp;
     }
     
@@ -142,7 +153,7 @@ public class ShadowWave extends Heal {
             //System.out.print("C: " + count);
             //System.out.println(" Creep: " + c.getPoint() + " r: " + c.getRadius());
             count++;
-            colliding = isColliding(originPoint, getCastRange(), 
+            colliding = LogicUtil.isColliding(originPoint, getCastRange(), 
                                 c.getPoint(), c.getRadius());
             System.out.println(colliding);
             if(colliding) {
@@ -150,17 +161,6 @@ public class ShadowWave extends Heal {
             }
         }
         return colliding;
-    }
-    // Check if 2 circles are colliding/overlapping
-    // TODO: Should be moved into a custom utility class
-    private boolean isColliding(Point2D.Float p1, float r1,
-                                Point2D.Float p2, float r2) {
-        
-        final float a = r1 + r2;
-        final float dx = p1.x - p2.x;
-        final float dy = p1.y - p2.y;
-        
-        return a * a > (dx * dx + dy * dy);
     }
     // Check if an ArrayList of creeps collide with the origin-point
     // Kanskje også flytte til en custom utility class
@@ -170,7 +170,7 @@ public class ShadowWave extends Heal {
         
         for(int i = 0; i < temp.length; i++) {
             Entity currentEntity = creeps.get(i);
-            temp[i] = isColliding(originPoint, originRadius, 
+            temp[i] = LogicUtil.isColliding(originPoint, originRadius, 
                                    currentEntity.getPoint(), currentEntity.getRadius());
         }
         
@@ -209,10 +209,9 @@ public class ShadowWave extends Heal {
         //debugNearestCreep(allies.get(2), allies);
         //debugCalculatePath(allies.get(2));
         shadowWave();
-        System.out.println(allies.size());
+        System.out.println("Allies original: " + allies.size());
     }
     // Prints out all booleans in a given array
-    // TODO: Should be moved into a custom utility class
     private void printMultipleBooleans(boolean[] bList) {
         for(boolean b : bList) {
             System.out.println(b);
