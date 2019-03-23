@@ -26,8 +26,29 @@ public abstract class Entity {
         this.health = maxHealth;
         this.damage(500);
     }
-    
+    /**
+     * Heals the entity for the
+     * @param amount The amount of healing to be done
+     */
     public void heal(double amount) {
+        // Check if the amount will not put the entity to full HP
+        if(amount > 0 && amount < (maxHealth - health)) {
+            health += amount;
+        }
+        // If the amount would put the entity to full HP and beyond,
+        // then set it to the maxHealth
+        else if(amount > 0) {
+            health = maxHealth;
+        }
+        else {
+            System.out.println("No healing was done");
+        }
+    }
+    /**
+     * Just the same as heal, but with extra print statements
+     * @param amount The amount of healing to be done
+     */
+    public void debugHeal(double amount) {
         if(amount > 0 && amount < (maxHealth - health)) {
             health += amount;
             System.out.println("HP is now " + health);

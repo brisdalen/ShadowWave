@@ -13,10 +13,10 @@ public class ShadowWave extends Heal {
     
     // The center of the cast-point-circle
     // in other words, stretches from 2.0f to 3.0f
-    private static final int SCALE = 100;
-    private float castOriginX = 2.5f;
+    private static final int SCALE = 10;
+    private float castOriginX = 12.5f;
     // and 4.0f to 5.0f
-    private float castOriginY = 4.5f;
+    private float castOriginY = 14.5f;
     private Point2D.Float originPoint;
     private float originRadius;
     private int bounceDistance = 475;
@@ -37,13 +37,13 @@ public class ShadowWave extends Heal {
         originRadius = 1.0f;
         // Allies og andre enheter hører hjemme i en egen klasse
         allies = new ArrayList<>();
-        allies.add(new Creep(3.5f*SCALE, 3.5f*SCALE, 1*SCALE)); // 0, innafor
-        allies.add(new Creep(5.5f*SCALE, 6.5f*SCALE, 1*SCALE)); // 1, innafor
-        allies.add(new Creep(14.5f*SCALE, 1.5f*SCALE, 1*SCALE)); // 2, utenfor
+        allies.add(new Creep(13.5f*SCALE, 13.5f*SCALE, 1*SCALE)); // 0, innafor
+        allies.add(new Creep(15.5f*SCALE, 16.5f*SCALE, 1*SCALE)); // 1, innafor
+        allies.add(new Creep(24.5f*SCALE, 11.5f*SCALE, 1*SCALE)); // 2, utenfor
         
         System.out.println(allies.size());
         
-        testMethod();
+        shadowWave();
         printCreepHealth();
         //healAll(calculatePath(allies.get(0)), healAmounts[currentLevel]);
         //healAll(allies, healAmounts[currentLevel]);
@@ -57,7 +57,7 @@ public class ShadowWave extends Heal {
     public void shadowWave() {
         if(isCollidingOrigin()) {
             Creep nearestCreep = nearestCreep(originPoint, allies);
-            //debugCalculatePath(nearestCreep);
+            //healAll(debugCalculatePath(nearestCreep), this.healAmount[currentLevel]);
             healAll(calculatePath(nearestCreep), this.healAmount[currentLevel]);
         } else {
             System.out.println("No creeps within cast range");
@@ -68,7 +68,7 @@ public class ShadowWave extends Heal {
         // Legge ett og ett punkt til en liste, utifra at de er nærme hverandre
         ArrayList<Creep> cListCopy = new ArrayList<>();
         for(Creep c : allies) {
-            cListCopy.add(new Creep(c.getX(), c.getY(), c.getRadius()));
+            cListCopy.add(c);
         }
         ArrayList<Creep> temp = new ArrayList<>();
         // Logikken her
@@ -80,20 +80,24 @@ public class ShadowWave extends Heal {
         }
         // TODO: Er dette beste løsningen kanskje?
         temp.remove(temp.get(0));
-        System.out.println("Temp size: " + temp.size());
+        
         return temp;
     }
     
-    private void debugCalculatePath(Creep target) {
+    private ArrayList<Creep> debugCalculatePath(Creep target) {
         System.out.println("Target creep: " + target.getPoint());
         for(Creep c : calculatePath(target)) {
             System.out.println("C in calcPath: " + c.getPoint());
         }
+        
+        ArrayList<Creep> temp = calculatePath(target);
+        System.out.println("Temp size: " + temp.size());
+        
+        return temp;
     }
     
     // Returns the creep closest to the given creep, out of a list of Creeps
     private Creep nearestCreep(Creep origin, ArrayList<Creep> cList) {
-        System.out.println("NearestCreep");
         // Clone the given list of creeps
         ArrayList<Creep> temp = (ArrayList<Creep>) cList.clone();
         // Remove the given creep to avoid duplication
@@ -230,8 +234,7 @@ public class ShadowWave extends Heal {
         }
     }
     
-    public static void main(String[] args) {
-        ShadowWave sw = new ShadowWave();
+    public Point2D.Float getOrigin() {
+        return new Point2D.Float(castOriginX, castOriginY);
     }
-    
 }
