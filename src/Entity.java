@@ -74,6 +74,44 @@ public abstract class Entity {
     public float getX() {
         return x;
     }
+    
+    public void roamX(float distance) {
+        float startX = getX();
+        // 1: Left, 0: Right
+        int direction = 0;
+        if(direction == 0) {
+            if(getX() >= startX + distance) {
+                direction = 1;
+                moveLeft();
+            } else {
+                moveRight();
+            }
+        }
+        if(direction == 1) {
+            if(getX() <= startX - distance) {
+                direction = 0;
+                moveRight();
+            } else {
+                moveLeft();
+            }
+        }
+    }
+    
+    public void moveRight() {
+        this.x += 1;
+    }
+    
+    public void moveLeft() {
+        this.x -= 1;
+    }
+    
+    public void moveRight(float amount) {
+        this.x += amount;
+    }
+    
+    public void moveLeft(float amount) {
+        this.x -= amount;
+    }
 
     public float getY() {
         return y;
