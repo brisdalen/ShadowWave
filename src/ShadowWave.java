@@ -234,6 +234,44 @@ public class ShadowWave extends Heal {
         }
     }
     
+    public void setOrigin(float x, float y) {
+        castOriginX = x;
+        castOriginY = y;
+    }
+    
+    public void debugMoveOrigin(int direction) {
+        switch (direction) {
+            case 0:
+                moveOrigin(direction);
+                System.out.println(getOrigin());
+            case 2:
+                moveOrigin(direction);
+                System.out.println(getOrigin());
+        }
+    }
+    
+    public void moveOrigin(int direction) {
+        switch (direction) {
+            case 0:
+                castOriginX = castOriginX -5;
+            case 2:
+                castOriginX = castOriginX +5;
+        }
+    }
+    
+    public void moveOrigin(int direction, float amount) {
+        switch (direction) {
+            case 0:
+                castOriginX -= amount;
+            case 1:
+                castOriginY -= amount;
+            case 2:
+                castOriginX += amount;
+            case 3:
+                castOriginX += amount;    
+        }
+    }
+    
     public Point2D.Float getOrigin() {
         return new Point2D.Float(castOriginX, castOriginY);
     }

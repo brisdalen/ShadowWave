@@ -9,6 +9,8 @@ import javafx.scene.effect.Bloom;
 import javafx.scene.effect.BoxBlur;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.effect.Glow;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Box;
 import javafx.scene.shape.Circle;
@@ -42,26 +44,8 @@ public class Window extends Application {
         
         sw = new ShadowWave();
         allyGraphic = new ArrayList<>();
-        Polygon hex = new Polygon();
-        
-        hex.getPoints().addAll(new Double[]{
-            200.0, 50.0,
-            400.0, 50.0,
-            450.0, 150.0,
-            400.0, 250.0,
-            200.0, 250.0,
-            150.0, 150.0,
-        });
-        hex.setFill(Color.BLUE);
-        
-        ScaleTransition scale = new ScaleTransition();
-        scale.setDuration(Duration.millis(1000));
-        scale.setNode(hex);
-        scale.setByY(1.5);
-        scale.setByX(1.5);
-        scale.setCycleCount(50);
-        scale.setAutoReverse(true);
-        scale.play();
+        Circle origin = new Circle(sw.getOrigin().x, sw.getOrigin().y, 
+                10, Color.CRIMSON);
      
         for(Creep c : sw.allies) {
             allyGraphic.add(new Circle(c.getX(), c.getY(), c.getRadius(), Color.GREENYELLOW));
@@ -70,9 +54,7 @@ public class Window extends Application {
             root.getChildren().add(text);
         }
         
-        root.getChildren().add(new Circle(sw.getOrigin().x, 
-                sw.getOrigin().y, 10, Color.CRIMSON));
-        root.getChildren().add(hex);
+        root.getChildren().add(origin);
         
         for(Circle c : allyGraphic) {
             root.getChildren().add(c);
