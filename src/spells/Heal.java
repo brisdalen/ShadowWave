@@ -1,3 +1,11 @@
+package spells;
+
+
+import world.Creep;
+import spells.Spell;
+import java.util.ArrayList;
+import world.Entity;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -10,18 +18,27 @@
  */
 public abstract class Heal extends Spell {
     // The amount of healing at every level
-    public double[] healAmount = new double[Spell.NUM_LEVELS];
+    public double[] healAmount;
 
-    public Heal() {
+    public Heal(int numOfSpells) {
         setCanTargetAllies(true);
+        healAmount = new double[numOfSpells];
     }
+    
+    protected void healAll(ArrayList<Entity> toHeal, double amount) {
+        for(Entity e : toHeal) {
+            e.heal(amount);
+        }
+    }
+    
     // Use an array of 4 doubles to set every amounts of healing
     public void setHealAmounts(double[] healAmounts) {
         // Check that the parameter healAmounts is an array of 4 elements
-        if(healAmounts.length == Spell.NUM_LEVELS) {
+        if(healAmounts.length == healAmount.length) {
             this.healAmount = healAmounts;
         } else {
-            System.out.println("Too many or too few elements. Expected: 4");
+            System.out.println("Too many or too few elements. Expected: " 
+                    + healAmount.length);
         }
     }
 

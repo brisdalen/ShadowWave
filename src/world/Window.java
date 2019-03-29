@@ -1,4 +1,8 @@
+package world;
 
+
+import world.Creep;
+import spells.ShadowWave;
 import java.util.ArrayList;
 import javafx.animation.RotateTransition;
 import javafx.animation.ScaleTransition;
@@ -34,31 +38,19 @@ import javafx.util.Duration;
  */
 public class Window extends Application {
     
-    ShadowWave sw;
     ArrayList<Circle> allyGraphic;
+    
+    int w = 300;
+    int h = 150;
 
     @Override
     public void start(Stage primaryStage) throws InterruptedException {
         
         Group root = new Group();
         
-        sw = new ShadowWave();
-        allyGraphic = new ArrayList<>();
-        Circle origin = new Circle(sw.getOrigin().x, sw.getOrigin().y, 
-                10, Color.CRIMSON);
-     
-        for(Creep c : sw.allies) {
-            allyGraphic.add(new Circle(c.getX(), c.getY(), c.getRadius(), Color.GREENYELLOW));
-            Text text = new Text(c.getX(), c.getY()-10, ""+c.getHealth());
-            text.setFont(Font.font("verdana", 14));
-            root.getChildren().add(text);
-        }
+        World world = new World(w, h);
         
-        root.getChildren().add(origin);
-        
-        for(Circle c : allyGraphic) {
-            root.getChildren().add(c);
-        }
+        root.getChildren().add(world);
         
         Scene scene = new Scene(root, 600, 300);
         scene.setFill(Color.rgb(11, 104, 140));

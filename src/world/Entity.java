@@ -1,5 +1,8 @@
+package world;
+
 
 import java.awt.geom.Point2D;
+import javafx.scene.shape.Circle;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -11,7 +14,7 @@ import java.awt.geom.Point2D;
  *
  * @author bjornar.risdalen
  */
-public abstract class Entity {
+public abstract class Entity extends Circle {
     private float x;
     private float y;
     private float radius;
@@ -25,6 +28,23 @@ public abstract class Entity {
         this.maxHealth = 1000;
         this.health = maxHealth;
         this.damage(500);
+    }
+
+    public Entity(float x, float y, float radius, double maxHealth) {
+        this.x = x;
+        this.y = y;
+        this.radius = radius;
+        this.maxHealth = maxHealth;
+        this.health = maxHealth;
+    }
+    
+    public void update() {
+        updatePosition();
+    }
+    
+    private void updatePosition() {
+        setTranslateX(x);
+        setTranslateY(y);
     }
     /**
      * Heals the entity for the
@@ -117,7 +137,7 @@ public abstract class Entity {
         return y;
     }
 
-    public float getRadius() {
+    public float getRadi() {
         return radius;
     }
     
